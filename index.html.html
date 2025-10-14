@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Leo 💜 Ingrid</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background: black;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      overflow: hidden;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 1.8rem;
+      margin-top: 15px;
+    }
+
+    #contador {
+      font-size: 1.2rem;
+      margin-top: 10px;
+      color: #d08fff;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 10px 20px;
+      border-radius: 20px;
+    }
+
+    p {
+      max-width: 300px;
+      margin-top: 15px;
+      line-height: 1.4;
+      font-size: 0.95rem;
+      opacity: 0.9;
+    }
+
+    .foto {
+      width: 160px;
+      height: 160px;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 0 20px #a959f7;
+      margin-top: 20px;
+    }
+
+    .foto img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .heart {
+      position: fixed;
+      color: #a959f7;
+      font-size: 20px;
+      animation: float 6s linear infinite;
+    }
+
+    @keyframes float {
+      0% {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-100vh) scale(0);
+        opacity: 0;
+      }
+    }
+
+    #iniciar {
+      position: fixed;
+      bottom: 40px;
+      background: #a959f7;
+      color: white;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 30px;
+      font-size: 1rem;
+      cursor: pointer;
+      box-shadow: 0 0 15px #a959f7;
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+      100% { transform: scale(1); }
+    }
+
+    audio { display: none; }
+  </style>
+</head>
+<body>
+  <div class="foto">
+    <img src="foto.jpg" alt="Leo e Ingrid">
+  </div>
+
+  <h1>Eu te amo há:</h1>
+  <div id="contador">Carregando...</div>
+
+  <p>Encontrar você foi a forma mais linda que o universo sorriu pra mim. 💜</p>
+
+  <button id="iniciar">Clique aqui 💜 </button>
+
+  <audio id="musica" loop>
+    <source src="musica.mp3" type="audio/mpeg">
+  </audio>
+
+  <script>
+    const inicio = new Date("2023-12-16T00:00:00");
+
+    function atualizarContador() {
+      const agora = new Date();
+      let diff = agora - inicio;
+
+      const segundos = Math.floor(diff / 1000) % 60;
+      const minutos = Math.floor(diff / (1000 * 60)) % 60;
+      const horas = Math.floor(diff / (1000 * 60 * 60)) % 24;
+      const diasTotais = Math.floor(diff / (1000 * 60 * 60 * 24));
+
+      const anos = Math.floor(diasTotais / 365);
+      const meses = Math.floor((diasTotais % 365) / 30);
+      const dias = diasTotais - (anos * 365) - (meses * 30);
+
+      document.getElementById("contador").textContent =
+        `${anos} anos, ${meses} meses, ${dias} dias, ${horas} horas, ${minutos} minutos e ${segundos} segundos`;
+    }
+
+    setInterval(atualizarContador, 1000);
+    atualizarContador();
+
+    // Corações flutuando
+    function criarCoracao() {
+      const heart = document.createElement("div");
+      heart.classList.add("heart");
+      heart.textContent = "💜";
+      heart.style.left = Math.random() * 100 + "vw";
+      heart.style.animationDuration = Math.random() * 3 + 3 + "s";
+      document.body.appendChild(heart);
+      setTimeout(() => heart.remove(), 6000);
+    }
+    setInterval(criarCoracao, 400);
+
+    // Música com interação
+    const botao = document.getElementById("iniciar");
+    const musica = document.getElementById("musica");
+
+    botao.addEventListener("click", () => {
+      musica.play();
+      botao.style.display = "none";
+    });
+  </script>
+</body>
+</html>
+
