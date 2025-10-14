@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Leo 💜 Ingrid</title>
+
+  <!-- Fontes -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500&family=Dancing+Script&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background: radial-gradient(circle at top, #3a004a, #000);
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      overflow: hidden;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 1.8rem;
+      margin-top: 15px;
+    }
+
+    #contador {
+      font-size: 1.2rem;
+      margin-top: 10px;
+      color: #d08fff;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 10px 20px;
+      border-radius: 20px;
+      box-shadow: 0 0 10px rgba(168, 89, 247, 0.5);
+    }
+
+    p {
+      max-width: 350px;
+      margin-top: 20px;
+      line-height: 1.4;
+      font-size: 1.3rem;
+      opacity: 0.95;
+      font-family: 'Dancing Script', cursive;
+    }
+
+    .foto {
+      width: 160px;
+      height: 160px;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 0 25px #a959f7;
+      margin-top: 20px;
+    }
+
+    .foto img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .heart {
+      position: fixed;
+      color: #a959f7;
+      font-size: 22px;
+      animation: float 6s linear infinite;
+      z-index: 1;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0) scale(1); opacity: 1; }
+      100% { transform: translateY(-100vh) scale(0); opacity: 0; }
+    }
+
+    #iniciar {
+      position: fixed;
+      bottom: 40px;
+      background: #a959f7;
+      color: white;
+      padding: 12px 28px;
+      border: none;
+      border-radius: 30px;
+      font-size: 1rem;
+      cursor: pointer;
+      box-shadow: 0 0 20px #a959f7;
+      animation: pulse 1.5s infinite;
+      z-index: 2;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+      100% { transform: scale(1); }
+    }
+
+    audio { display: none; }
+
+    @media (max-width: 500px) {
+      h1 { font-size: 1.4rem; }
+      #contador { font-size: 1rem; padding: 8px 15px; }
+      .foto { width: 120px; height: 120px; }
+      p { font-size: 1.1rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="foto">
+    <img src="foto.jpg" alt="Leo e Ingrid">
+  </div>
+
+  <h1>Eu te amo há:</h1>
+  <div id="contador">Carregando...</div>
+
+  <p>Conhecer você foi a forma mais linda que o universo sorriu pra mim. 💜</p>
+
+  <button id="iniciar">Clique aqui 💜</button>
+
+  <audio id="musica" loop>
+    <source src="musica.mp3" type="audio/mpeg">
+  </audio>
+
+  <script>
+    const inicio = new Date("2023-12-16T00:00:00");
+    const contadorEl = document.getElementById("contador");
+
+    function plural(valor, singular, plural) {
+      return valor === 1 ? `${valor} ${singular}` : `${valor} ${plural}`;
+    }
+
+    function atualizarContador() {
+      const agora = new Date();
+      let anos = agora.getFullYear() - inicio.getFullYear();
+      let meses = agora.getMonth() - inicio.getMonth();
+      let dias = agora.getDate() - inicio.getDate();
+
+      if (dias < 0) {
+        meses--;
+        const ultimoDiaMesAnterior = new Date(agora.getFullYear(), agora.getMonth(), 0).getDate();
+        dias += ultimoDiaMesAnterior;
+      }
+
+      if (meses < 0) {
+        anos--;
+        meses += 12;
+      }
+
+      const horas = agora.getHours();
+      const minutos = agora.getMinutes();
+      const segundos = agora.getSeconds();
+
+      contadorEl.textContent =
+        `${plural(anos, "ano", "anos")}, ${plural(meses, "mês", "meses")}, ${plural(dias, "dia", "dias")}, ` +
+        `${plural(horas, "hora", "horas")}, ${plural(minutos, "minuto", "minutos")} e ${plural(segundos, "segundo", "segundos")}`;
+    }
+
+    setInterval(atualizarContador, 1000);
+    atualizarContador();
+
+    // Corações flutuantes 💜
+    function criarCoracao() {
+      const heart = document.createElement("div");
+      heart.classList.add("heart");
+      heart.textContent = "💜";
+      heart.style.left = Math.random() * 100 + "vw";
+      heart.style.animationDuration = Math.random() * 3 + 3 + "s";
+      heart.style.fontSize = Math.random() * 10 + 15 + "px";
+      document.body.appendChild(heart);
+      setTimeout(() => heart.remove(), 6000);
+    }
+    setInterval(criarCoracao, 400);
+
+    // Música ao clicar
+    const botao = document.getElementById("iniciar");
+    const musica = document.getElementById("musica");
+
+    botao.addEventListener("click", () => {
+      musica.play();
+      botao.style.display = "none";
+    });
+  </script>
+</body>
+</html>
