@@ -145,18 +145,8 @@
 
   <!-- Carrossel -->
   <div class="carrossel-container">
-    <div class="carrossel">
-      <img src="foto.jpg" alt="Leo e Ingrid">
-      <img src="foto1.jpg" alt="Foto 1">
-      <img src="foto2.jpg" alt="Foto 2">
-      <img src="foto3.jpg" alt="Foto 3">
-      <img src="foto4.jpg" alt="Foto 4">
-      <img src="foto5.jpg" alt="Foto 5">
-      <img src="foto6.jpg" alt="Foto 6">
-      <img src="foto7.jpg" alt="Foto 7">
-      <img src="foto8.jpg" alt="Foto 8">
-      <img src="foto9.jpg" alt="Foto 9">
-      <img src="foto10.jpg" alt="Foto 10">
+    <div class="carrossel" id="carrossel">
+      <!-- imagens serão inseridas via JS -->
     </div>
     <div class="seta left">&#10094;</div>
     <div class="seta right">&#10095;</div>
@@ -168,28 +158,40 @@
   <p>Conhecer você foi a forma mais linda que o universo sorriu pra mim. 💜</p>
 
   <button id="iniciar">Clique aqui 💜</button>
-
-  <!-- NOVO BOTÃO -->
   <button id="verHistoria" style="margin-top:20px;">Nossa história 💜</button>
-
-  <!-- HISTÓRIA OCULTA -->
-  <div id="historia" style="display:none; max-width:350px; margin-top:20px;">
-    <p>
-      Tudo começou de um jeito simples, mas desde o primeiro momento eu já sabia
-      que tinha algo diferente em você.
-      <br><br>
-      Cada conversa, cada momento, cada risada... tudo foi construindo algo
-      que hoje é uma das partes mais importantes da minha vida.
-      <br><br>
-      E isso é só o começo da nossa história. 💜
-    </p>
-  </div>
 
   <audio id="musica" loop>
     <source src="musica.mp3" type="audio/mpeg">
   </audio>
 
   <script>
+    // IMAGENS ALEATÓRIAS (ATÉ 10)
+    const imagens = [
+      "foto.jpg",
+      "foto1.jpg",
+      "foto2.jpg",
+      "foto3.jpg",
+      "foto4.jpg",
+      "foto5.jpg",
+      "foto6.jpg",
+      "foto7.jpg",
+      "foto8.jpg",
+      "foto9.jpg"
+      "foto10.jpg"
+    ];
+
+    imagens.sort(() => Math.random() - 0.5);
+
+    const carrossel = document.getElementById("carrossel");
+
+    imagens.forEach(src => {
+      const img = document.createElement("img");
+      img.src = src;
+      carrossel.appendChild(img);
+    });
+
+    const imgs = document.querySelectorAll(".carrossel img");
+
     // CONTADOR
     const inicio = new Date("2023-12-16T00:00:00");
     const contadorEl = document.getElementById("contador");
@@ -240,7 +242,7 @@
     }
     setInterval(criarCoracao, 400);
 
-    // MÚSICA COM FADE-IN (ALTERADO)
+    // MÚSICA COM FADE-IN
     const botao = document.getElementById("iniciar");
     const musica = document.getElementById("musica");
 
@@ -260,23 +262,18 @@
       }, 200);
     });
 
-    // HISTÓRIA COM SENHA (NOVO)
-    const botaoHistoria = document.getElementById("verHistoria");
-    const historia = document.getElementById("historia");
-
-    botaoHistoria.addEventListener("click", () => {
+    // HISTÓRIA COM SENHA
+    document.getElementById("verHistoria").addEventListener("click", () => {
       const senha = prompt("Digite a senha 💜");
 
       if (senha === "161223") {
-        historia.style.display = "block";
+        window.location.href = "historia.html";
       } else {
         alert("Senha incorreta 💔");
       }
     });
 
     // CARROSSEL
-    const carrossel = document.querySelector(".carrossel");
-    const imgs = document.querySelectorAll(".carrossel img");
     const setaEsq = document.querySelector(".seta.left");
     const setaDir = document.querySelector(".seta.right");
     let index = 0;
