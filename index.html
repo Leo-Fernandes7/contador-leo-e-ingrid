@@ -110,9 +110,8 @@
       100% { transform: translateY(-100vh) scale(0); opacity: 0; }
     }
 
-    #iniciar {
-      position: fixed;
-      bottom: 40px;
+    /* BOTÕES (mesmo estilo) */
+    button {
       background: #a959f7;
       color: white;
       padding: 12px 28px;
@@ -123,6 +122,16 @@
       box-shadow: 0 0 20px #a959f7;
       animation: pulse 1.5s infinite;
       z-index: 2;
+    }
+
+    .topo {
+      position: fixed;
+      top: 20px;
+    }
+
+    .baixo {
+      position: fixed;
+      bottom: 40px;
     }
 
     @keyframes pulse {
@@ -147,8 +156,9 @@
 
   <p>Conhecer você foi a forma mais linda que o universo sorriu pra mim. 💜</p>
 
-  <button id="iniciar">Clique aqui 💜</button>
-  <button id="verHistoria" style="margin-top:20px;">Nossa história 💜</button>
+  <!-- BOTÕES -->
+  <button id="iniciar" class="topo">Clique aqui 💜</button>
+  <button id="verHistoria" class="baixo">Nossa história 💜</button>
 
   <audio id="musica" loop>
     <source src="musica.mp3" type="audio/mpeg">
@@ -247,7 +257,9 @@
 
     document.getElementById("verHistoria").addEventListener("click", () => {
       const senha = prompt("Digite a senha 💜");
+
       if (senha === "161223") {
+        localStorage.setItem("musica", "on");
         window.location.href = "historia.html";
       } else {
         alert("Senha incorreta 💔");
@@ -277,7 +289,6 @@
       mostrar(index);
     }, 5000);
 
-    // SWIPE MOBILE
     let startX = 0;
 
     const container = document.getElementById("container");
