@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Leo 💜 Ingrid</title>
 
-  <!-- Fontes -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500&family=Dancing+Script&display=swap" rel="stylesheet">
 
   <style>
@@ -52,13 +51,13 @@
       font-family: 'Dancing Script', cursive;
     }
 
-    /* CARROSSEL */
     .carrossel-container {
       position: relative;
       width: 240px;
       height: 240px;
       margin-top: 20px;
       overflow: hidden;
+      touch-action: pan-y;
     }
 
     .carrossel {
@@ -75,7 +74,6 @@
       box-shadow: 0 0 25px #a959f7;
     }
 
-    /* Setas fora da foto */
     .seta {
       position: absolute;
       top: 50%;
@@ -96,13 +94,8 @@
       transform: translateY(-50%) scale(1.2);
     }
 
-    .seta.left {
-      left: -35px;
-    }
-
-    .seta.right {
-      right: -35px;
-    }
+    .seta.left { left: -35px; }
+    .seta.right { right: -35px; }
 
     .heart {
       position: fixed;
@@ -143,11 +136,8 @@
 </head>
 <body>
 
-  <!-- Carrossel -->
-  <div class="carrossel-container">
-    <div class="carrossel" id="carrossel">
-      <!-- imagens serão inseridas via JS -->
-    </div>
+  <div class="carrossel-container" id="container">
+    <div class="carrossel" id="carrossel"></div>
     <div class="seta left">&#10094;</div>
     <div class="seta right">&#10095;</div>
   </div>
@@ -165,7 +155,6 @@
   </audio>
 
   <script>
-    // IMAGENS ALEATÓRIAS (ATÉ 10)
     const imagens = [
       "foto.jpg",
       "foto1.jpg",
@@ -176,7 +165,7 @@
       "foto6.jpg",
       "foto7.jpg",
       "foto8.jpg",
-      "foto9.jpg"
+      "foto9.jpg",
       "foto10.jpg"
     ];
 
@@ -192,12 +181,11 @@
 
     const imgs = document.querySelectorAll(".carrossel img");
 
-    // CONTADOR
     const inicio = new Date("2023-12-16T00:00:00");
     const contadorEl = document.getElementById("contador");
 
-    function plural(valor, singular, plural) {
-      return valor === 1 ? `${valor} ${singular}` : `${valor} ${plural}`;
+    function plural(v, s, p) {
+      return v === 1 ? `${v} ${s}` : `${v} ${p}`;
     }
 
     function atualizarContador() {
@@ -208,8 +196,7 @@
 
       if (dias < 0) {
         meses--;
-        const ultimoDiaMesAnterior = new Date(agora.getFullYear(), agora.getMonth(), 0).getDate();
-        dias += ultimoDiaMesAnterior;
+        dias += new Date(agora.getFullYear(), agora.getMonth(), 0).getDate();
       }
 
       if (meses < 0) {
@@ -217,19 +204,18 @@
         meses += 12;
       }
 
-      const horas = agora.getHours();
-      const minutos = agora.getMinutes();
-      const segundos = agora.getSeconds();
+      const h = agora.getHours();
+      const m = agora.getMinutes();
+      const s = agora.getSeconds();
 
       contadorEl.textContent =
-        `${plural(anos, "ano", "anos")}, ${plural(meses, "mês", "meses")}, ${plural(dias, "dia", "dias")}, ` +
-        `${plural(horas, "hora", "horas")}, ${plural(minutos, "minuto", "minutos")} e ${plural(segundos, "segundo", "segundos")}`;
+        `${plural(anos,"ano","anos")}, ${plural(meses,"mês","meses")}, ${plural(dias,"dia","dias")}, ` +
+        `${plural(h,"hora","horas")}, ${plural(m,"minuto","minutos")} e ${plural(s,"segundo","segundos")}`;
     }
 
     setInterval(atualizarContador, 1000);
     atualizarContador();
 
-    // CORAÇÕES
     function criarCoracao() {
       const heart = document.createElement("div");
       heart.classList.add("heart");
@@ -242,7 +228,6 @@
     }
     setInterval(criarCoracao, 400);
 
-    // MÚSICA COM FADE-IN
     const botao = document.getElementById("iniciar");
     const musica = document.getElementById("musica");
 
@@ -251,21 +236,17 @@
       musica.play();
       botao.style.display = "none";
 
-      let volume = 0;
+      let v = 0;
       const fade = setInterval(() => {
-        if (volume < 1) {
-          volume += 0.05;
-          musica.volume = volume;
-        } else {
-          clearInterval(fade);
-        }
+        if (v < 1) {
+          v += 0.05;
+          musica.volume = v;
+        } else clearInterval(fade);
       }, 200);
     });
 
-    // HISTÓRIA COM SENHA
     document.getElementById("verHistoria").addEventListener("click", () => {
       const senha = prompt("Digite a senha 💜");
-
       if (senha === "161223") {
         window.location.href = "historia.html";
       } else {
@@ -273,29 +254,50 @@
       }
     });
 
-    // CARROSSEL
     const setaEsq = document.querySelector(".seta.left");
     const setaDir = document.querySelector(".seta.right");
     let index = 0;
 
-    const mostrar = (i) => {
+    function mostrar(i) {
       carrossel.style.transform = `translateX(${-i * imgs[0].clientWidth}px)`;
     }
 
-    setaEsq.addEventListener("click", () => {
+    setaEsq.onclick = () => {
       index = (index - 1 + imgs.length) % imgs.length;
       mostrar(index);
-    });
+    };
 
-    setaDir.addEventListener("click", () => {
+    setaDir.onclick = () => {
       index = (index + 1) % imgs.length;
       mostrar(index);
-    });
+    };
 
     setInterval(() => {
       index = (index + 1) % imgs.length;
       mostrar(index);
     }, 5000);
+
+    // SWIPE MOBILE
+    let startX = 0;
+
+    const container = document.getElementById("container");
+
+    container.addEventListener("touchstart", e => {
+      startX = e.touches[0].clientX;
+    });
+
+    container.addEventListener("touchend", e => {
+      let endX = e.changedTouches[0].clientX;
+      let diff = startX - endX;
+
+      if (diff > 50) {
+        index = (index + 1) % imgs.length;
+        mostrar(index);
+      } else if (diff < -50) {
+        index = (index - 1 + imgs.length) % imgs.length;
+        mostrar(index);
+      }
+    });
   </script>
 </body>
 </html>
