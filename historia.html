@@ -433,45 +433,42 @@
     /* Music ctrl */
     #music-ctrl {
       position: fixed;
-      bottom: 22px;
-      right: 22px;
+      bottom: 24px;
+      right: 24px;
       z-index: 50;
-      width: 42px; height: 42px;
-      border-radius: 50%;
-      border: 1px solid rgba(168,85,247,.4);
-      background: rgba(10,0,20,.7);
-      backdrop-filter: blur(10px);
+      height: 44px;
+      padding: 0 18px 0 14px;
+      border-radius: 50px;
+      border: 1px solid rgba(168,85,247,.45);
+      background: rgba(10,0,20,.75);
+      backdrop-filter: blur(14px);
       cursor: pointer;
       display: none;
       align-items: center;
       justify-content: center;
-      transition: all .25s var(--ease-spring);
+      gap: 10px;
+      transition: all .3s var(--ease-spring);
       box-shadow: var(--glow-sm);
     }
 
     #music-ctrl.visible { display: flex; }
-    #music-ctrl:hover { transform: scale(1.12); box-shadow: var(--glow-md); border-color: var(--v6); }
 
-    .eq { display: flex; gap: 2px; align-items: flex-end; height: 14px; }
-
-    .bar {
-      width: 3px;
-      border-radius: 2px;
-      background: var(--v6);
-      animation: eq-bounce .8s ease-in-out infinite alternate;
+    #music-ctrl:hover {
+      border-color: var(--v6);
+      box-shadow: var(--glow-md);
+      transform: translateY(-2px) scale(1.04);
     }
 
-    .bar:nth-child(1){ height:6px;  animation-delay:0s;    }
-    .bar:nth-child(2){ height:12px; animation-delay:.15s;  }
-    .bar:nth-child(3){ height:8px;  animation-delay:.3s;   }
-    .bar:nth-child(4){ height:10px; animation-delay:.1s;   }
-
-    @keyframes eq-bounce {
-      from{ transform: scaleY(.4); }
-      to  { transform: scaleY(1);  }
+    .mc-label {
+      font-family: 'Cinzel', serif;
+      font-size: .62rem;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      color: var(--v6);
     }
 
     #music-ctrl.paused .bar { animation-play-state: paused; }
+    #music-ctrl.paused .mc-label::after { content: ' (pausada)'; opacity:.6; }
 
     /* ═══════════════════════════════════════════════
        ANIMATIONS
@@ -498,13 +495,14 @@
   </div>
   <div id="cursor-glow"></div>
 
-  <div id="music-ctrl" role="button" aria-label="Play/pause música" tabindex="0">
+  <div id="music-ctrl" role="button" aria-label="Controle de música" tabindex="0">
     <div class="eq">
       <div class="bar"></div>
       <div class="bar"></div>
       <div class="bar"></div>
       <div class="bar"></div>
     </div>
+    <span class="mc-label">música</span>
   </div>
 
   <main class="page">
