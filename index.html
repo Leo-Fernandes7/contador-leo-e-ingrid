@@ -1,4 +1,5 @@
-<!DOCTYPE html>
+
+     <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
@@ -495,52 +496,177 @@
 
     .btn:active { transform: translateY(-1px); }
 
-    .btn-top    { opacity: 0; animation: reveal 1s .2s forwards; margin-bottom: 12px; }
     .btn-bottom { opacity: 0; animation: reveal 1s 1.8s forwards; margin-top: 10px; }
 
     /* ═══════════════════════════════════════════════
-       MUSIC CONTROL (discrete)
+       ENTRY SCREEN — tela de entrada imersiva
+    ═══════════════════════════════════════════════ */
+    #entry-screen {
+      position: fixed;
+      inset: 0;
+      z-index: 500;
+      background: radial-gradient(ellipse at 50% 60%, rgba(88,28,135,.55) 0%, var(--v0) 70%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 28px;
+      transition: opacity .9s var(--ease-out-expo), visibility .9s;
+      cursor: pointer;
+    }
+
+    #entry-screen.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .entry-names {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(1rem, 4vw, 1.3rem);
+      letter-spacing: .4em;
+      text-transform: uppercase;
+      color: var(--v6);
+      text-shadow: var(--glow-sm);
+      animation: pulse-fade 2.5s ease-in-out infinite;
+    }
+
+    @keyframes pulse-fade {
+      0%,100%{ opacity:.7; } 50%{ opacity:1; }
+    }
+
+    .entry-btn {
+      position: relative;
+      width: 110px; height: 110px;
+      border-radius: 50%;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      outline: none;
+    }
+
+    /* Ripple rings */
+    .entry-btn::before,
+    .entry-btn::after {
+      content: '';
+      position: absolute;
+      border-radius: 50%;
+      border: 1px solid rgba(168,85,247,.5);
+      animation: ripple-out 2.4s ease-out infinite;
+    }
+
+    .entry-btn::before { width: 100%; height: 100%; animation-delay: 0s; }
+    .entry-btn::after  { width: 100%; height: 100%; animation-delay: 1.2s; }
+
+    @keyframes ripple-out {
+      0%   { transform: scale(1);   opacity:.7; }
+      100% { transform: scale(2.2); opacity:0;  }
+    }
+
+    .entry-circle {
+      width: 88px; height: 88px;
+      border-radius: 50%;
+      background: linear-gradient(145deg, rgba(168,85,247,.35), rgba(107,33,168,.5));
+      border: 1px solid rgba(192,132,252,.5);
+      backdrop-filter: blur(12px);
+      box-shadow: var(--glow-lg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.2rem;
+      transition: transform .3s var(--ease-spring), box-shadow .3s;
+      animation: heartbeat 2s ease-in-out infinite;
+    }
+
+    .entry-btn:hover .entry-circle,
+    #entry-screen:hover .entry-circle {
+      transform: scale(1.1);
+      box-shadow: 0 0 60px rgba(168,85,247,.7), 0 0 120px rgba(168,85,247,.3);
+    }
+
+    .entry-hint {
+      font-family: 'Sacramento', cursive;
+      font-size: clamp(1.2rem, 4vw, 1.5rem);
+      color: rgba(192,132,252,.75);
+      animation: pulse-fade 2.5s ease-in-out infinite;
+      animation-delay: .5s;
+    }
+
+    .entry-hint-small {
+      font-family: 'Cinzel', serif;
+      font-size: .62rem;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      color: rgba(192,132,252,.4);
+      margin-top: -16px;
+    }
+
+    /* ═══════════════════════════════════════════════
+       MUSIC CONTROL — pill flutuante visível
     ═══════════════════════════════════════════════ */
     #music-ctrl {
       position: fixed;
-      bottom: 22px;
-      right: 22px;
+      bottom: 24px;
+      right: 24px;
       z-index: 50;
-      width: 42px; height: 42px;
-      border-radius: 50%;
-      border: 1px solid rgba(168,85,247,.4);
-      background: rgba(10,0,20,.7);
-      backdrop-filter: blur(10px);
+      height: 44px;
+      padding: 0 18px 0 14px;
+      border-radius: 50px;
+      border: 1px solid rgba(168,85,247,.45);
+      background: rgba(10,0,20,.75);
+      backdrop-filter: blur(14px);
       cursor: pointer;
       display: none;
       align-items: center;
       justify-content: center;
-      font-size: 1.1rem;
-      transition: all .25s var(--ease-spring);
+      gap: 10px;
+      transition: all .3s var(--ease-spring);
       box-shadow: var(--glow-sm);
+      white-space: nowrap;
     }
 
     #music-ctrl.visible { display: flex; }
-    #music-ctrl:hover { transform: scale(1.12); box-shadow: var(--glow-md); border-color: var(--v6); }
 
-    #music-ctrl .eq {
+    #music-ctrl:hover {
+      border-color: var(--v6);
+      box-shadow: var(--glow-md);
+      transform: translateY(-2px) scale(1.04);
+    }
+
+    .mc-icon {
+      font-size: 1rem;
+      line-height: 1;
+    }
+
+    .mc-label {
+      font-family: 'Cinzel', serif;
+      font-size: .62rem;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      color: var(--v6);
+    }
+
+    .eq {
       display: flex;
       gap: 2px;
       align-items: flex-end;
       height: 14px;
     }
 
-    #music-ctrl .bar {
+    .bar {
       width: 3px;
       border-radius: 2px;
       background: var(--v6);
       animation: eq-bounce .8s ease-in-out infinite alternate;
     }
 
-    #music-ctrl .bar:nth-child(1){ height:6px;  animation-delay:0s;    }
-    #music-ctrl .bar:nth-child(2){ height:12px; animation-delay:.15s;  }
-    #music-ctrl .bar:nth-child(3){ height:8px;  animation-delay:.3s;   }
-    #music-ctrl .bar:nth-child(4){ height:10px; animation-delay:.1s;   }
+    .bar:nth-child(1){ height:6px;  animation-delay:0s;   }
+    .bar:nth-child(2){ height:12px; animation-delay:.15s; }
+    .bar:nth-child(3){ height:8px;  animation-delay:.3s;  }
+    .bar:nth-child(4){ height:10px; animation-delay:.1s;  }
 
     @keyframes eq-bounce {
       from{ transform: scaleY(.4); }
@@ -548,6 +674,7 @@
     }
 
     #music-ctrl.paused .bar { animation-play-state: paused; }
+    #music-ctrl.paused .mc-label::after { content: ' (pausada)'; opacity: .6; }
 
     /* ═══════════════════════════════════════════════
        MODAL
@@ -731,20 +858,29 @@
   </div>
   <div id="cursor-glow"></div>
 
-  <!-- MUSIC CONTROL -->
-  <div id="music-ctrl" role="button" aria-label="Play/pause música" tabindex="0">
+  <!-- ENTRY SCREEN -->
+  <div id="entry-screen" role="button" tabindex="0" aria-label="Tocar música e entrar">
+    <div class="entry-names">Leo &nbsp;💜&nbsp; Ingrid</div>
+    <button class="entry-btn" aria-hidden="true" tabindex="-1">
+      <div class="entry-circle">💜</div>
+    </button>
+    <div class="entry-hint">toque para começar</div>
+    <div class="entry-hint-small">com música 💜</div>
+  </div>
+
+  <!-- MUSIC CONTROL PILL -->
+  <div id="music-ctrl" role="button" aria-label="Controle de música" tabindex="0">
     <div class="eq">
       <div class="bar"></div>
       <div class="bar"></div>
       <div class="bar"></div>
       <div class="bar"></div>
     </div>
+    <span class="mc-label">música</span>
   </div>
 
   <!-- MAIN -->
   <div class="page-shell">
-    <button id="iniciar" class="btn btn-top" aria-label="Iniciar experiência">Clique aqui 💜</button>
-
     <div class="wrapper">
       <div class="greeting" id="greeting" aria-live="polite"></div>
       <div class="names" aria-label="Leo e Ingrid">Leo &nbsp;💜&nbsp; Ingrid</div>
@@ -1135,37 +1271,40 @@
   setInterval(createHeart, 600);
 
   /* ══════════════════════════════════════════════════
-     MUSIC
+     ENTRY SCREEN + MUSIC
   ══════════════════════════════════════════════════ */
-  const botao  = document.getElementById('iniciar');
-  const musica = document.getElementById('musica');
-  const ctrl   = document.getElementById('music-ctrl');
-  let playing  = false;
+  const entryScreen = document.getElementById('entry-screen');
+  const musica      = document.getElementById('musica');
+  const ctrl        = document.getElementById('music-ctrl');
+  let playing       = false;
 
-  function fadeIn(audio){
+  function fadeIn(audio) {
     audio.volume = 0;
-    audio.play().catch(()=>{});
+    audio.play().catch(() => {});
     let v = 0;
-    const fade = setInterval(() => {
+    const f = setInterval(() => {
       v = Math.min(v + .04, 1);
       audio.volume = v;
-      if(v >= 1) clearInterval(fade);
+      if (v >= 1) clearInterval(f);
     }, 150);
     playing = true;
     ctrl.classList.remove('paused');
   }
 
-  botao.addEventListener('click', () => {
+  function enterSite() {
+    entryScreen.classList.add('hidden');
+    ctrl.classList.add('visible');
     fadeIn(musica);
-    botao.style.opacity   = '0';
-    botao.style.transform = 'scale(0.8)';
-    botao.style.transition= 'all .5s';
-    setTimeout(() => { botao.style.display = 'none'; ctrl.classList.add('visible'); }, 500);
     localStorage.setItem('musica', 'on');
+  }
+
+  entryScreen.addEventListener('click', enterSite);
+  entryScreen.addEventListener('keydown', e => {
+    if (e.key === 'Enter' || e.key === ' ') enterSite();
   });
 
   ctrl.addEventListener('click', () => {
-    if(playing){
+    if (playing) {
       musica.pause();
       playing = false;
       ctrl.classList.add('paused');
@@ -1173,16 +1312,16 @@
     } else {
       fadeIn(musica);
       localStorage.setItem('musica', 'on');
-      botao.style.display = 'none';
-      ctrl.classList.add('visible');
     }
   });
 
-  ctrl.addEventListener('keydown', e => { if(e.key === 'Enter' || e.key === ' ') ctrl.click(); });
+  ctrl.addEventListener('keydown', e => {
+    if (e.key === 'Enter' || e.key === ' ') ctrl.click();
+  });
 
-  /* Resume if already started (page reload) */
-  if(localStorage.getItem('musica') === 'on'){
-    botao.style.display = 'none';
+  /* Se já tinha música tocando (voltou da página história) */
+  if (localStorage.getItem('musica') === 'on') {
+    entryScreen.classList.add('hidden');
     ctrl.classList.add('visible');
     fadeIn(musica);
   }
