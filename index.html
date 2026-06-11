@@ -72,7 +72,7 @@
 
     @keyframes heartbeat {
       0%,100%{ transform: scale(1); }
-      14%    { transform: scale(1.18); }
+      14%    { transform: scale(1.18); }                              
       28%    { transform: scale(1); }
       42%    { transform: scale(1.1); }
       70%    { transform: scale(1); }
@@ -1403,10 +1403,15 @@
   </script>
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
-  import { getFirestore } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+
+  import {
+    getFirestore,
+    collection,
+    addDoc
+  } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
 
   const firebaseConfig = {
-    apiKey: "SUA_CHAVE",
+    apiKey: "AIzaSyAS9X0FR1b7B9VeH1i1KqiADnwtLgGmoOc",
     authDomain: "leoingrid.firebaseapp.com",
     projectId: "leoingrid",
     storageBucket: "leoingrid.firebasestorage.app",
@@ -1416,21 +1421,23 @@
 
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
-async function testeFirebase() {
-  try {
-    const docRef = await addDoc(collection(db, "mural"), {
-      mensagem: "Teste do Leo 💜",
-      criadoEm: new Date().toISOString()
-    });
 
-    console.log("Documento criado:", docRef.id);
-  } catch (erro) {
-    console.error("Erro:", erro);
-  }
-}
-
-testeFirebase();
   console.log("Firebase conectado!");
+
+  async function testeFirebase() {
+    try {
+      const docRef = await addDoc(collection(db, "mural"), {
+        mensagem: "Teste do Leo 💜",
+        criadoEm: new Date().toISOString()
+      });
+
+      console.log("Documento criado:", docRef.id);
+    } catch (erro) {
+      console.error("Erro:", erro);
+    }
+  }
+
+  testeFirebase();
 </script>
 </body>
 </html>
