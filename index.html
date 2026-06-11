@@ -1416,7 +1416,20 @@
 
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
+async function testeFirebase() {
+  try {
+    const docRef = await addDoc(collection(db, "mural"), {
+      mensagem: "Teste do Leo 💜",
+      criadoEm: new Date().toISOString()
+    });
 
+    console.log("Documento criado:", docRef.id);
+  } catch (erro) {
+    console.error("Erro:", erro);
+  }
+}
+
+testeFirebase();
   console.log("Firebase conectado!");
 </script>
 </body>
